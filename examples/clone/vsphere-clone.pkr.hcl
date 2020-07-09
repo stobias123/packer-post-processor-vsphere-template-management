@@ -6,6 +6,7 @@ variable "vsphere_password" {}
 variable "vsphere_datastore" {}
 variable "vsphere_cluster" {}
 variable "ssh_password" {}
+variable "content_library" {}
 
 source "vsphere-clone" "example" {
   CPUs = 4
@@ -30,4 +31,10 @@ build {
   sources = [
     "source.vsphere-clone.example"
   ]
+  post-processor "vsphere-postprocessor" {
+      content_library = var.content_library,
+      vcenter_server = var.vsphere_url,
+      vcenter_username = var.vsphere_username,
+      vcenter_password = var.vsphere_password
+  }
 }

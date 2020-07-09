@@ -29,9 +29,11 @@ type FlatConfig struct {
 	InsecureConnection         *bool             `mapstructure:"insecure_connection" cty:"insecure_connection" hcl:"insecure_connection"`
 	Datacenter                 *string           `mapstructure:"datacenter" cty:"datacenter" hcl:"datacenter"`
 	Identifier                 *string           `mapstructure:"identifier" cty:"identifier" hcl:"identifier"`
+	VCenterUsername            *string           `mapstructure:"vcenter_username" cty:"vcenter_username" hcl:"vcenter_username"`
+	VCenterPassword            *string           `mapstructure:"vcenter_password" cty:"vcenter_password" hcl:"vcenter_password"`
+	ContentLibrary             *string           `mapstructure:"content_library" cty:"content_library" hcl:"content_library"`
 	KeepReleases               *int              `mapstructure:"keep_releases" cty:"keep_releases" hcl:"keep_releases"`
 	KeepDays                   *int              `mapstructure:"keep_days" cty:"keep_days" hcl:"keep_days"`
-	ContentLibrary             *string           `mapstructure:"content_library" cty:"content_library" hcl:"content_library"`
 	DryRun                     *bool             `mapstructure:"dry_run" cty:"dry_run" hcl:"dry_run"`
 }
 
@@ -67,9 +69,11 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"insecure_connection":            &hcldec.AttrSpec{Name: "insecure_connection", Type: cty.Bool, Required: false},
 		"datacenter":                     &hcldec.AttrSpec{Name: "datacenter", Type: cty.String, Required: false},
 		"identifier":                     &hcldec.AttrSpec{Name: "identifier", Type: cty.String, Required: false},
+		"vcenter_username":               &hcldec.AttrSpec{Name: "vcenter_username", Type: cty.String, Required: false},
+		"vcenter_password":               &hcldec.AttrSpec{Name: "vcenter_password", Type: cty.String, Required: false},
+		"content_library":                &hcldec.AttrSpec{Name: "content_library", Type: cty.String, Required: false},
 		"keep_releases":                  &hcldec.AttrSpec{Name: "keep_releases", Type: cty.Number, Required: false},
 		"keep_days":                      &hcldec.AttrSpec{Name: "keep_days", Type: cty.Number, Required: false},
-		"content_library":                &hcldec.AttrSpec{Name: "content_library", Type: cty.String, Required: false},
 		"dry_run":                        &hcldec.AttrSpec{Name: "dry_run", Type: cty.Bool, Required: false},
 	}
 	return s

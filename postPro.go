@@ -3,17 +3,20 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
+	"github.com/hashicorp/packer/helper/config"
 	"github.com/hashicorp/packer/packer"
+	"github.com/hashicorp/packer/template/interpolate"
 )
 
 // PostProcessor is the core of this library
 // Packer performs `PostProcess()` method of this processor
 type PostProcessor struct {
 	testMode bool
-	cleaner  AbstractCloner
+	cloner   AbstractCloner
 	config   Config
 }
 
@@ -26,8 +29,27 @@ func (p *PostProcessor) ConfigSpec() hcldec.ObjectSpec {
 // This should set up our restClient.
 func (p *PostProcessor) Configure(raws ...interface{}) error {
 	//p.config.ConnectConfig
-	if p.config.Identifier == "" {
-		return errors.New("empty `identifier` is not allowed. Please make sure that it is set correctly")
+
+	err := config.Decode(&p.config, &config.DecodeOpts{
+		Interpolate:        true,
+		InterpolateContext: &p.config.ctx,
+		InterpolateFilter:  &interpolate.RenderFilter{},
+	}, raws...)
+
+	if err != nil {
+		return err
+	}
+	if p.config.ContentLibrary == "" {
+		return errors.New("empty `content_library` is not allowed. Please make sure that it is set correctly")
+	}
+	if p.config.VCenterServer == "" {
+		return errors.New("empty `vcenter_server` is not allowed. Please make sure that it is set correctly")
+	}
+	if p.config.VCenterUsername == "" {
+		return errors.New("empty `vcenter_username` is not allowed. Please make sure that it is set correctly")
+	}
+	if p.config.VCenterPassword == "" {
+		return errors.New("empty `vcenter_password` is not allowed. Please make sure that it is set correctly")
 	}
 	return nil
 }
@@ -35,7 +57,19 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 // PostProcess clones a vsphere template to a content library
 func (p *PostProcessor) PostProcess(ctx context.Context, ui packer.Ui, artifact packer.Artifact) (packer.Artifact, bool, bool, error) {
 	log.Println("Running the post-processor")
-	return nil, false, false, nil
+	//log.Println(artifact.String())
+	ui.Message(p.uiMessage(fmt.Sprintf("Uploading to content library %s", p.config.ContentLibrary)))
+	var err error
+	p.cloner, err = NewCloner(p.config)
+	if err != nil {
+		return artifact, true, false, err
+	}
+	err = p.cloner.CloneToContentLibrary(ctx, artifact, p.config.ContentLibrary)
+	if err != nil {
+		return artifact, true, false, err
+	}
+
+	return artifact, true, false, nil
 }
 
 func (p *PostProcessor) uiMessage(message string) string {

@@ -1,0 +1,33 @@
+env:
+  - CGO_ENABLED=0
+before:
+  hooks:
+    - go mod download
+builds:
+  - goos:
+      - linux
+      - darwin
+      - freebsd
+      - netbsd
+      - openbsd
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm
+archives:
+  - id: zip
+    format: zip
+    files:
+      - LICENSE
+changelog:
+  skip: true
+checksum:
+  name_template: 'checksums.txt'
+release:
+  github:
+    owner: stobias123
+    name: packer-post-processor-vsphere-template-management
+  draft: true
+snapshot:
+  name_template: "{{ .Tag }}-dev"

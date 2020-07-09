@@ -31,7 +31,7 @@ build {
   sources = [
     "source.vsphere-clone.example"
   ]
-  post-processor "vsphere-postprocessor" {
+  post-processor "vsphere-template-management" {
       content_library = var.content_library
       vcenter_server = var.vsphere_url
       vcenter_username = var.vsphere_username

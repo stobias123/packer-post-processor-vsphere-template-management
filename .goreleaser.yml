@@ -7,14 +7,9 @@ builds:
   - goos:
       - linux
       - darwin
-      - freebsd
-      - netbsd
-      - openbsd
       - windows
     goarch:
-      - 386
       - amd64
-      - arm
 archives:
   - id: zip
     format: zip

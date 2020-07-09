@@ -2,3 +2,4 @@
 packer_vsphere_postprocessor
 temp/
 packer-post-processor-vsphere-postprocessor
+dist/

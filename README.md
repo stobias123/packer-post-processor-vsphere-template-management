@@ -4,10 +4,10 @@ Aims to handle post processing of vmware templates.
 
 Goals are the following
 
-[x] Copy to content library
-[] Copy to a range of content libraries
-[] Clean up old templates in vcenter
-[] Clean up old templates in content libraries.
+- [x] Copy to content library
+- [ ] Copy to a range of content libraries
+- [ ] Clean up old templates in vcenter
+- [ ] Clean up old templates in content libraries.
 
 ## Examples
 

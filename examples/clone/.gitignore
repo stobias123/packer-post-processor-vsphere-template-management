@@ -1,0 +1,2 @@
+*.pkvars.hcl
+packer-post-processor-vsphere-postprocessor

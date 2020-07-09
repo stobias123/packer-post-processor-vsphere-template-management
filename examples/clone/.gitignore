@@ -1,2 +1,2 @@
-*.pkvars.hcl
+*.auto.pkrvars.hcl
 packer-post-processor-vsphere-postprocessor
